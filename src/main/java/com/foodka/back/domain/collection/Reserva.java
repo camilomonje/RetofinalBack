@@ -16,15 +16,15 @@ public class Reserva {
     @Id
     private String id = UUID.randomUUID().toString().substring(0, 10);
     private String mensaje;
-    private LocalTime hora;
-    private LocalDate dia;
+    private String hora;
+    private String dia;
     private Cliente cliente;
 
     public Reserva() {
     }
 
 
-    public Reserva(String id, String mensaje, LocalTime hora, LocalDate dia, Cliente cliente) {
+    public Reserva(String id, String mensaje, String hora, String dia, Cliente cliente) {
         this.id = id;
         this.mensaje = mensaje;
         this.hora = hora;

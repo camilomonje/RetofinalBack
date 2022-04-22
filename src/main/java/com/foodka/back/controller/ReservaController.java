@@ -13,31 +13,32 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/api/reserva")
 public class ReservaController {
 
-@Autowired
+    @Autowired
     ReservaService reservaService;
 
-    @PostMapping
-    public ResponseEntity<Mono<ReservaDTO>> save(@RequestBody ReservaDTO reservaDTO){
+    @PostMapping("")
+    public ResponseEntity<Mono<ReservaDTO>> save(@RequestBody ReservaDTO reservaDTO) {
+        System.out.println(reservaDTO);
         return new ResponseEntity<Mono<ReservaDTO>>(reservaService.save(reservaDTO), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Mono<ReservaDTO>> findById(@PathVariable("id") String id){
+    public ResponseEntity<Mono<ReservaDTO>> findById(@PathVariable("id") String id) {
         return new ResponseEntity<Mono<ReservaDTO>>(reservaService.findById(id), HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity<Flux<ReservaDTO>> findAll(){
+    public ResponseEntity<Flux<ReservaDTO>> findAll() {
         return new ResponseEntity<Flux<ReservaDTO>>(reservaService.findAll(), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Mono<ReservaDTO>> delete(@PathVariable("id")String id){
+    public ResponseEntity<Mono<ReservaDTO>> delete(@PathVariable("id") String id) {
         return new ResponseEntity<Mono<ReservaDTO>>(reservaService.delete(id), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Mono<ReservaDTO>> update(@PathVariable("id")String id, @RequestBody ReservaDTO reservaDTO){
+    public ResponseEntity<Mono<ReservaDTO>> update(@PathVariable("id") String id, @RequestBody ReservaDTO reservaDTO) {
         return new ResponseEntity<Mono<ReservaDTO>>(reservaService.update(id, reservaDTO), HttpStatus.OK);
     }
 
