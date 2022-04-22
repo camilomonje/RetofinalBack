@@ -1,0 +1,16 @@
+package com.foodka.back.services;
+
+import com.foodka.back.domain.dto.ReservaDTO;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+public interface ReservaService {
+
+    Mono<ReservaDTO> save(ReservaDTO reservaDTO);
+    Mono<ReservaDTO> findById(String id);
+    Flux<ReservaDTO> findAll();
+    Mono<ReservaDTO> delete(String id);
+    Mono<ReservaDTO> update(String id, ReservaDTO reservaDTO);
+
+
+}
