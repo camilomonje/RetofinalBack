@@ -24,8 +24,10 @@ public class ReservaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Mono<ReservaDTO>> findById(@PathVariable("id") String id) {
-        return new ResponseEntity<Mono<ReservaDTO>>(reservaService.findById(id), HttpStatus.OK);
+    public Mono<ResponseEntity<ReservaDTO>> findById(@PathVariable("id") String id) {
+        return reservaService.findById(id)
+                .flatMap(reserva -> Mono.just(ResponseEntity.ok(reserva)))
+                .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()));
     }
 
     @GetMapping
@@ -34,13 +36,17 @@ public class ReservaController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Mono<ReservaDTO>> delete(@PathVariable("id") String id) {
-        return new ResponseEntity<Mono<ReservaDTO>>(reservaService.delete(id), HttpStatus.OK);
+    public Mono<ResponseEntity<ReservaDTO>> delete(@PathVariable("id") String id) {
+        return reservaService.delete(id)
+                .flatMap(reserva -> Mono.just(ResponseEntity.ok(reserva)))
+                .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Mono<ReservaDTO>> update(@PathVariable("id") String id, @RequestBody ReservaDTO reservaDTO) {
-        return new ResponseEntity<Mono<ReservaDTO>>(reservaService.update(id, reservaDTO), HttpStatus.OK);
+    public Mono<ResponseEntity<ReservaDTO>> update(@PathVariable("id") String id, @RequestBody ReservaDTO reservaDTO) {
+        return reservaService.update(id, reservaDTO)
+                .flatMap(reserva -> Mono.just(ResponseEntity.ok(reserva)))
+                .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()));
     }
 
 }
