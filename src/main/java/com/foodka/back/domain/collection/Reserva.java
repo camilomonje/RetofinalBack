@@ -23,7 +23,6 @@ public class Reserva {
     public Reserva() {
     }
 
-
     public Reserva(String id, String mensaje, String hora, String dia, Cliente cliente) {
         this.id = id;
         this.mensaje = mensaje;
