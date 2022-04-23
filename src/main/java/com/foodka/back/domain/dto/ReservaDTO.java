@@ -19,8 +19,15 @@ public class ReservaDTO {
     private Cliente cliente;
 
     public ReservaDTO() {
+
     }
 
+    public ReservaDTO(String mensaje, String hora, String dia, Cliente cliente) {
+        this.mensaje = mensaje;
+        this.hora = hora;
+        this.dia = dia;
+        this.cliente = cliente;
+    }
 
     public ReservaDTO(String id, String mensaje, String hora, String dia, Cliente cliente) {
         this.id = id;

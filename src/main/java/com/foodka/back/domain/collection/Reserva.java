@@ -23,6 +23,13 @@ public class Reserva {
     public Reserva() {
     }
 
+    public Reserva(String mensaje, String hora, String dia, Cliente cliente) {
+        this.mensaje = mensaje;
+        this.hora = hora;
+        this.dia = dia;
+        this.cliente = cliente;
+    }
+
     public Reserva(String id, String mensaje, String hora, String dia, Cliente cliente) {
         this.id = id;
         this.mensaje = mensaje;
