@@ -17,9 +17,8 @@ public class ReservaController {
     @Autowired
     ReservaService reservaService;
 
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity<Mono<ReservaDTO>> save(@RequestBody ReservaDTO reservaDTO) {
-        System.out.println(reservaDTO);
         return new ResponseEntity<Mono<ReservaDTO>>(reservaService.save(reservaDTO), HttpStatus.CREATED);
     }
 
