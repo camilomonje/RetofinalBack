@@ -23,7 +23,7 @@ public class Reserva {
     private String dia;
     private Cliente cliente;
     private int cantidadPersonas;
-    private int telefono;
+    private String telefono;
 
     public Reserva() {
     }
@@ -33,7 +33,7 @@ public class Reserva {
         this.dia = dia;
     }
 
-    public Reserva(String mensaje, String hora, String dia, Cliente cliente, int cantidadPersonas, int telefono) {
+    public Reserva(String mensaje, String hora, String dia, Cliente cliente, int cantidadPersonas, String telefono) {
         this.mensaje = mensaje;
         this.hora = hora;
         this.dia = dia;
@@ -42,7 +42,7 @@ public class Reserva {
         this.telefono = telefono;
     }
 
-    public Reserva(String id, String mensaje, String hora, String dia, Cliente cliente, int cantidadPersonas, int telefono) {
+    public Reserva(String id, String mensaje, String hora, String dia, Cliente cliente, int cantidadPersonas, String telefono) {
         this.id = id;
         this.mensaje = mensaje;
         this.hora = hora;

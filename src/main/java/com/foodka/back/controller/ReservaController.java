@@ -81,8 +81,8 @@ public class ReservaController {
 
     public static boolean validateFechaYHora(String dia, String hora) {
         try {
-            Date fecha = new SimpleDateFormat("dd/M/yyyy").parse(dia);
-            String fechanueva = new SimpleDateFormat("dd/M/yyyy").format(fecha);
+            Date fecha = new SimpleDateFormat("d/M/yyyy").parse(dia);
+            String fechanueva = new SimpleDateFormat("d/M/yyyy").format(fecha);
             Date hora2 = new SimpleDateFormat("HH:mm").parse(hora);
             String horaNueva = new SimpleDateFormat("HH:mm").format(hora2);
             return (fechanueva.equals(dia) && horaNueva.equals(hora));

@@ -19,7 +19,7 @@ public class ReservaDTO {
     private String dia;
     private Cliente cliente;
     private int cantidadPersonas;
-    private int telefono;
+    private String telefono;
 
     public ReservaDTO() {
 
@@ -30,7 +30,7 @@ public class ReservaDTO {
         this.dia = dia;
     }
 
-    public ReservaDTO(String mensaje, String hora, String dia, Cliente cliente, int cantidadPersonas, int telefono) {
+    public ReservaDTO(String mensaje, String hora, String dia, Cliente cliente, int cantidadPersonas, String telefono) {
         this.mensaje = mensaje;
         this.hora = hora;
         this.dia = dia;
@@ -39,7 +39,7 @@ public class ReservaDTO {
         this.telefono = telefono;
     }
 
-    public ReservaDTO(String id, String mensaje, String hora, String dia, Cliente cliente, int cantidadPersonas, int telefono) {
+    public ReservaDTO(String id, String mensaje, String hora, String dia, Cliente cliente, int cantidadPersonas, String telefono) {
         this.id = id;
         this.mensaje = mensaje;
         this.hora = hora;
