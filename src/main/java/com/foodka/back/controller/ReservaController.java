@@ -1,6 +1,7 @@
 package com.foodka.back.controller;
 
 import com.foodka.back.domain.dto.ReservaDTO;
+import com.foodka.back.domain.values.Cliente;
 import com.foodka.back.services.ReservaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,6 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -18,8 +24,16 @@ public class ReservaController {
     ReservaService reservaService;
 
     @PostMapping
-    public ResponseEntity<Mono<ReservaDTO>> save(@RequestBody ReservaDTO reservaDTO) {
-        return new ResponseEntity<Mono<ReservaDTO>>(reservaService.save(reservaDTO), HttpStatus.CREATED);
+    public Mono<ResponseEntity<ReservaDTO>> save(@RequestBody ReservaDTO reservaDTO) {
+        if (reservaDTO.getCliente() == null && validateFechaYHora(reservaDTO.getDia(), reservaDTO.getHora())) {
+            return (reservaService.save(reservaDTO)
+                    .flatMap(reserva -> Mono.just(ResponseEntity.ok(reserva))));
+        } else if (validateEmail(reservaDTO.getCliente()) && validateFechaYHora(reservaDTO.getDia(), reservaDTO.getHora())) {
+            return (reservaService.save(reservaDTO)
+                    .flatMap(reserva -> Mono.just(ResponseEntity.ok(reserva))));
+        } else {
+            return Mono.just(ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
+        }
     }
 
     @GetMapping("/{id}")
@@ -43,9 +57,37 @@ public class ReservaController {
 
     @PutMapping("/{id}")
     public Mono<ResponseEntity<ReservaDTO>> update(@PathVariable("id") String id, @RequestBody ReservaDTO reservaDTO) {
-        return reservaService.update(id, reservaDTO)
-                .flatMap(reserva -> Mono.just(ResponseEntity.ok(reserva)))
-                .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()));
+        if (validateEmail(reservaDTO.getCliente()) && validateFechaYHora(reservaDTO.getDia(), reservaDTO.getHora())) {
+            return reservaService.update(id, reservaDTO)
+                    .flatMap(reserva -> Mono.just(ResponseEntity.ok(reserva)))
+                    .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()));
+        } else {
+            return Mono.just(ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
+        }
     }
 
+    public static boolean validateEmail(Cliente cliente) {
+        try {
+            Pattern pattern = Pattern
+                    .compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                            + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+            Matcher matcher = pattern.matcher(cliente.getEmail());
+            return matcher.find();
+        } catch (Exception e) {
+            return false;
+        }
+
+    }
+
+    public static boolean validateFechaYHora(String dia, String hora) {
+        try {
+            Date fecha = new SimpleDateFormat("dd/M/yyyy").parse(dia);
+            String fechanueva = new SimpleDateFormat("dd/M/yyyy").format(fecha);
+            Date hora2 = new SimpleDateFormat("HH:mm").parse(hora);
+            String horaNueva = new SimpleDateFormat("HH:mm").format(hora2);
+            return (fechanueva.equals(dia) && horaNueva.equals(hora));
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }
