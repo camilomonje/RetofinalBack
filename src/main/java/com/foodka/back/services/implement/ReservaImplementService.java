@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 @Service
 public class ReservaImplementService implements ReservaService {
 
@@ -51,5 +54,15 @@ public class ReservaImplementService implements ReservaService {
                     return save(reservaDTO);
                 })
                 .switchIfEmpty(Mono.empty());
+    }
+
+    public static boolean validateEmail(String email) {
+        Pattern pattern = Pattern
+                .compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                        + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+
+        Matcher matcher = pattern.matcher(email);
+
+        return matcher.find();
     }
 }
