@@ -3,6 +3,7 @@ package com.foodka.back.services.implement;
 import com.foodka.back.domain.collection.Reserva;
 import com.foodka.back.domain.dto.ReservaDTO;
 import com.foodka.back.repository.ReservaRepository;
+import com.foodka.back.services.EmailService;
 import com.foodka.back.services.ReservaService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,9 @@ public class ReservaImplementService implements ReservaService {
 
     @Autowired
     ReservaRepository reservaRepository;
+
+    @Autowired
+    EmailService emailService;
 
     ModelMapper modelMapper = new ModelMapper();
 
@@ -56,13 +60,26 @@ public class ReservaImplementService implements ReservaService {
                 .switchIfEmpty(Mono.empty());
     }
 
-    public static boolean validateEmail(String email) {
-        Pattern pattern = Pattern
-                .compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-                        + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
-
-        Matcher matcher = pattern.matcher(email);
-
-        return matcher.find();
+    @Override
+    public Mono<String> sendNotificationEmail(ReservaDTO reservaDTO) {
+        return emailService.sendEmailMessage(
+                reservaDTO.getCliente().getEmail(),
+                String.format("Confirmación de Reserva Restaurante FOODKA Código: %s", reservaDTO.getId()),
+                String.format("Buen día %s, %n" +
+                                "Su reserva fue confirmada para el día %s, hora %s para %d personas. %n" +
+                                "Su pedido fue: %s. %n%n" +
+                                "Tienes hasta dos horas antes de tu reserva para cancelar o modificar la misma. %n" +
+                                "¡Los esperamos!",
+                        reservaDTO.getCliente().getNombre().toUpperCase(),
+                        reservaDTO.getDia(),
+                        reservaDTO.getHora(),
+                        reservaDTO.getCantidadPersonas(),
+                        reservaDTO.getMensaje()));
     }
 }
+
+//Buen dia Lucia,
+//Su reserva fue confirmada para el dia 22/1/2012, hora 10:00 para 10 personas.
+//Su pedido fue: mensaje
+//Tienes hasta dos horas antes de tu reserva para cancelar o modificar la misma.
+//¡Los esperamos!

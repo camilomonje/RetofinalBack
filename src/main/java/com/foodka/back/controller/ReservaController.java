@@ -66,6 +66,18 @@ public class ReservaController {
         }
     }
 
+    @PostMapping("/sendEmail")
+    public Mono<ResponseEntity<String>> sendEmail(@RequestBody ReservaDTO reservaDTO) {
+        if (validateEmail(reservaDTO.getCliente()) && validateFechaYHora(reservaDTO.getDia(), reservaDTO.getHora())) {
+            return reservaService.sendNotificationEmail(reservaDTO)
+                    .flatMap(reserva -> Mono.just(ResponseEntity.ok(reserva)))
+                    .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()));
+        } else {
+            return Mono.just(ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
+        }
+    }
+
+
     public static boolean validateEmail(Cliente cliente) {
         try {
             Pattern pattern = Pattern
