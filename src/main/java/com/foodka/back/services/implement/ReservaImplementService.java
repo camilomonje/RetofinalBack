@@ -25,7 +25,7 @@ public class ReservaImplementService implements ReservaService {
 
     ModelMapper modelMapper = new ModelMapper();
 
-    private static final String EMAIL_ADMINISTRADOR = "restaurantefoodka@gmail.com";
+    private static final String EMAIL_ADMINISTRADOR = "gerenefoodka@gmail.com";
 
     @Override
     public Mono<ReservaDTO> save(ReservaDTO reservaDTO) {
