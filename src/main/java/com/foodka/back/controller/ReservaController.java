@@ -99,6 +99,17 @@ public class ReservaController {
         }
     }
 
+    @PostMapping("/sendEmailError")
+    public Mono<ResponseEntity<String>> sendEmailError(@RequestBody ReservaDTO reservaDTO) {
+        if (validateEmail(reservaDTO.getCliente()) && validateFechaYHora(reservaDTO.getDia(), reservaDTO.getHora())) {
+            return reservaService.sendErrorEmail(reservaDTO)
+                    .flatMap(reserva -> Mono.just(ResponseEntity.ok(reserva)))
+                    .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()));
+        } else {
+            return Mono.just(ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
+        }
+    }
+
     @GetMapping("/findByDia/{dia}")
     @ResponseStatus(HttpStatus.OK)
     public Mono<List<String>> findByDia(@PathVariable("dia") String dia) {
