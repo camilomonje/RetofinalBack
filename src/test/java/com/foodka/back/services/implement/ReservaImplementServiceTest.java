@@ -49,6 +49,7 @@ class ReservaImplementServiceTest {
     @Test
     void testFindAll() {
         Flux<ReservaDTO> reservas = service.findAll();
+        System.out.println(reservas);
         StepVerifier.create(reservas).expectComplete();
     }
 
@@ -64,7 +65,7 @@ class ReservaImplementServiceTest {
 
     @Test
     void testUpdate() {
-        ReservaDTO reserva = new ReservaDTO("", "12:00", "23/04/2022", new Cliente(),0,"" );
+        ReservaDTO reserva = new ReservaDTO("", "12:00", "23/04/2022", new Cliente(), 0, "");
         Mono<ReservaDTO> reservaDTOMono = service.save(reserva);
         String id = reservaDTOMono.block().getId();
         ReservaDTO reserva2 = new ReservaDTO("Nuevo pedido",
@@ -78,6 +79,7 @@ class ReservaImplementServiceTest {
         Mono<ReservaDTO> reservaDTOMono1 = service.update(id, reserva2);
         StepVerifier.create(reservaDTOMono1).expectNext(reserva2).verifyComplete();
     }
+
 
 
 }

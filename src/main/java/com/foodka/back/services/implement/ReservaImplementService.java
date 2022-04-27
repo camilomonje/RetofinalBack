@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ReservaImplementService implements ReservaService {
@@ -76,10 +76,15 @@ public class ReservaImplementService implements ReservaService {
                         reservaDTO.getCantidadPersonas(),
                         reservaDTO.getMensaje()));
     }
+
+    @Override
+    public Mono<List<String>> findByDia(String dia) {
+        return reservaRepository.findByDia(dia)
+                .flatMap(reservas -> Mono.just(modelMapper.map(reservas, ReservaDTO.class).getHora()))
+                .collectList();
+    }
+
+
+
 }
 
-//Buen dia Lucia,
-//Su reserva fue confirmada para el dia 22/1/2012, hora 10:00 para 10 personas.
-//Su pedido fue: mensaje
-//Tienes hasta dos horas antes de tu reserva para cancelar o modificar la misma.
-//¡Los esperamos!

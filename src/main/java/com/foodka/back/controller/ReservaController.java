@@ -12,6 +12,7 @@ import reactor.core.publisher.Mono;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -77,6 +78,13 @@ public class ReservaController {
         }
     }
 
+    @GetMapping("/findByDia/{dia}")
+    @ResponseStatus(HttpStatus.OK)
+    public Mono<List<String>> findByDia(@PathVariable("dia") String dia) {
+        return reservaService.findByDia(dia);
+
+    }
+
 
     public static boolean validateEmail(Cliente cliente) {
         try {
@@ -93,8 +101,8 @@ public class ReservaController {
 
     public static boolean validateFechaYHora(String dia, String hora) {
         try {
-            Date fecha = new SimpleDateFormat("d/M/yyyy").parse(dia);
-            String fechanueva = new SimpleDateFormat("d/M/yyyy").format(fecha);
+            Date fecha = new SimpleDateFormat("M/d/yyyy").parse(dia);
+            String fechanueva = new SimpleDateFormat("M/d/yyyy").format(fecha);
             Date hora2 = new SimpleDateFormat("HH:mm").parse(hora);
             String horaNueva = new SimpleDateFormat("HH:mm").format(hora2);
             return (fechanueva.equals(dia) && horaNueva.equals(hora));
