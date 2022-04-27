@@ -13,7 +13,7 @@ import reactor.core.publisher.Mono;
 @Validated
 public class EmailImplementService implements EmailService {
 
-    private static final String NOREPLY_ADDRESS = "restofoodka@gmail.com";
+    private static final String NOREPLY_ADDRESS = "restaurantefoodka@gmail.com";
     @Autowired
     private JavaMailSender javaMailSender;
 
