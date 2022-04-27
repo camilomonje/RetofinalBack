@@ -70,7 +70,28 @@ public class ReservaController {
     @PostMapping("/sendEmail")
     public Mono<ResponseEntity<String>> sendEmail(@RequestBody ReservaDTO reservaDTO) {
         if (validateEmail(reservaDTO.getCliente()) && validateFechaYHora(reservaDTO.getDia(), reservaDTO.getHora())) {
-            return reservaService.sendNotificationEmail(reservaDTO)
+            return reservaService.sendConfirmationEmail(reservaDTO)
+                    .flatMap(reserva -> Mono.just(ResponseEntity.ok(reserva)))
+                    .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()));
+        } else {
+            return Mono.just(ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
+        }
+    }
+
+    @PostMapping("/sendEmailModification")
+    public Mono<ResponseEntity<String>> sendEmailModification(@RequestBody ReservaDTO reservaDTO) {
+        if (validateEmail(reservaDTO.getCliente()) && validateFechaYHora(reservaDTO.getDia(), reservaDTO.getHora())) {
+            return reservaService.sendModificationEmail(reservaDTO)
+                    .flatMap(reserva -> Mono.just(ResponseEntity.ok(reserva)))
+                    .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()));
+        } else {
+            return Mono.just(ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
+        }
+    }
+    @PostMapping("/sendEmailDelete")
+    public Mono<ResponseEntity<String>> sendEmailDelete(@RequestBody ReservaDTO reservaDTO) {
+        if (validateEmail(reservaDTO.getCliente()) && validateFechaYHora(reservaDTO.getDia(), reservaDTO.getHora())) {
+            return reservaService.sendDeleteEmail(reservaDTO)
                     .flatMap(reserva -> Mono.just(ResponseEntity.ok(reserva)))
                     .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()));
         } else {
@@ -82,9 +103,7 @@ public class ReservaController {
     @ResponseStatus(HttpStatus.OK)
     public Mono<List<String>> findByDia(@PathVariable("dia") String dia) {
         return reservaService.findByDia(dia);
-
     }
-
 
     public static boolean validateEmail(Cliente cliente) {
         try {

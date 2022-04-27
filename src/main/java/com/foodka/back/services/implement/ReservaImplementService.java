@@ -61,7 +61,7 @@ public class ReservaImplementService implements ReservaService {
     }
 
     @Override
-    public Mono<String> sendNotificationEmail(ReservaDTO reservaDTO) {
+    public Mono<String> sendConfirmationEmail(ReservaDTO reservaDTO) {
         return emailService.sendEmailMessage(
                 reservaDTO.getCliente().getEmail(),
                 String.format("Confirmación de Reserva Restaurante FOODKA Código: %s", reservaDTO.getId()),
@@ -75,6 +75,37 @@ public class ReservaImplementService implements ReservaService {
                         reservaDTO.getHora(),
                         reservaDTO.getCantidadPersonas(),
                         reservaDTO.getMensaje()));
+    }
+
+    @Override
+    public Mono<String> sendModificationEmail(ReservaDTO reservaDTO) {
+        return emailService.sendEmailMessage(
+                reservaDTO.getCliente().getEmail(),
+                String.format("Modificación de Reserva Restaurante FOODKA Código: %s", reservaDTO.getId()),
+                String.format("Buen día %s, %n" +
+                                "Su reserva fue modificada %n " +
+                                "Sus reserva quedo actualmente asi: %n" +
+                                "- Para el día %s, hora %s para %d personas. %n" +
+                                "- Su pedido fue: %s. %n%n" +
+                                "Tienes hasta dos horas antes de tu reserva para cancelar o modificar la misma. %n" +
+                                "¡Los esperamos!",
+                        reservaDTO.getCliente().getNombre().toUpperCase(),
+                        reservaDTO.getDia(),
+                        reservaDTO.getHora(),
+                        reservaDTO.getCantidadPersonas(),
+                        reservaDTO.getMensaje()));
+    }
+
+    @Override
+    public Mono<String> sendDeleteEmail(ReservaDTO reservaDTO) {
+        return emailService.sendEmailMessage(
+                reservaDTO.getCliente().getEmail(),
+                String.format("Eliminación de Reserva Restaurante FOODKA Código: %s", reservaDTO.getId()),
+                String.format("Buen día %s, %n" +
+                                "Su reserva con código %s fue cancelada. %n%n" +
+                                "¡Los esperamos en una próxima ocasión!",
+                        reservaDTO.getCliente().getNombre().toUpperCase(),
+                        reservaDTO.getId()));
     }
 
     @Override

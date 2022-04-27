@@ -13,7 +13,9 @@ public interface ReservaService {
     Flux<ReservaDTO> findAll();
     Mono<ReservaDTO> delete(String id);
     Mono<ReservaDTO> update(String id, ReservaDTO reservaDTO);
-    Mono<String> sendNotificationEmail(ReservaDTO reservaDTO);
+    Mono<String> sendConfirmationEmail(ReservaDTO reservaDTO);
+    Mono<String> sendModificationEmail(ReservaDTO reservaDTO);
+    Mono<String> sendDeleteEmail(ReservaDTO reservaDTO);
     Mono<List<String>> findByDia(String dia);
 
 
