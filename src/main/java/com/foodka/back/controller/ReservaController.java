@@ -79,6 +79,7 @@ public class ReservaController {
     }
 
     @GetMapping("/findByDia/{dia}")
+    @ResponseStatus(HttpStatus.OK)
     public Mono<List<String>> findByDia(@PathVariable("dia") String dia) {
         return reservaService.findByDia(dia);
 
