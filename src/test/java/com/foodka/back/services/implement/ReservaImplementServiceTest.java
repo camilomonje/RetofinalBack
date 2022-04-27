@@ -80,11 +80,6 @@ class ReservaImplementServiceTest {
         StepVerifier.create(reservaDTOMono1).expectNext(reserva2).verifyComplete();
     }
 
-    @Test
-    void testhoras() {
-        Flux<String> str = service.findByDia("26/4/2022");
-        System.out.println(str);
-    }
 
 
 }
