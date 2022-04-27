@@ -25,6 +25,8 @@ public class ReservaImplementService implements ReservaService {
 
     ModelMapper modelMapper = new ModelMapper();
 
+    private static final String EMAIL_ADMINISTRADOR = "restaurantefoodka@gmail.com";
+
     @Override
     public Mono<ReservaDTO> save(ReservaDTO reservaDTO) {
         return reservaRepository.save(modelMapper.map(reservaDTO, Reserva.class))
@@ -62,6 +64,29 @@ public class ReservaImplementService implements ReservaService {
 
     @Override
     public Mono<String> sendConfirmationEmail(ReservaDTO reservaDTO) {
+        emailService.sendEmailMessage(
+                EMAIL_ADMINISTRADOR,
+                String.format("Reserva confirmada restaurante FOODKA Código: %s", reservaDTO.getId()),
+                String.format("Buen día señor administrador, %n%n" +
+                                "Se acaba de realizar la siguiente reserva:%n%n" +
+                                "Código: %s%n" +
+                                "Fecha: %s%n" +
+                                "Hora: %s%n" +
+                                "Nombre de quien reserva: %s %s%n" +
+                                "Cantidad de Personas: %d%n" +
+                                "Teléfono: %s%n" +
+                                "Email: %s%n" +
+                                "Pedido: %s",
+                        reservaDTO.getId(),
+                        reservaDTO.getDia(),
+                        reservaDTO.getHora(),
+                        reservaDTO.getCliente().getNombre(),
+                        reservaDTO.getCliente().getApellido(),
+                        reservaDTO.getCantidadPersonas(),
+                        reservaDTO.getTelefono(),
+                        reservaDTO.getCliente().getEmail(),
+                        reservaDTO.getMensaje()));
+
         return emailService.sendEmailMessage(
                 reservaDTO.getCliente().getEmail(),
                 String.format("Confirmación de Reserva Restaurante FOODKA Código: %s", reservaDTO.getId()),
@@ -79,6 +104,29 @@ public class ReservaImplementService implements ReservaService {
 
     @Override
     public Mono<String> sendModificationEmail(ReservaDTO reservaDTO) {
+        emailService.sendEmailMessage(
+                EMAIL_ADMINISTRADOR,
+                String.format("Reserva modificada restaurante FOODKA Código: %s", reservaDTO.getId()),
+                String.format("Buen día señor administrador, %n%n" +
+                                "Se acaba de realizar una modificación en la siguiente reserva:%n%n" +
+                                "Código: %s%n" +
+                                "Fecha: %s%n" +
+                                "Hora: %s%n" +
+                                "Nombre de quien reserva: %s %s%n" +
+                                "Cantidad de Personas: %d%n" +
+                                "Teléfono: %s%n" +
+                                "Email: %s%n" +
+                                "Pedido: %s",
+                        reservaDTO.getId(),
+                        reservaDTO.getDia(),
+                        reservaDTO.getHora(),
+                        reservaDTO.getCliente().getNombre(),
+                        reservaDTO.getCliente().getApellido(),
+                        reservaDTO.getCantidadPersonas(),
+                        reservaDTO.getTelefono(),
+                        reservaDTO.getCliente().getEmail(),
+                        reservaDTO.getMensaje()));
+
         return emailService.sendEmailMessage(
                 reservaDTO.getCliente().getEmail(),
                 String.format("Modificación de Reserva Restaurante FOODKA Código: %s", reservaDTO.getId()),
@@ -98,6 +146,28 @@ public class ReservaImplementService implements ReservaService {
 
     @Override
     public Mono<String> sendDeleteEmail(ReservaDTO reservaDTO) {
+        emailService.sendEmailMessage(
+                EMAIL_ADMINISTRADOR,
+                String.format("Reserva cancelada restaurante FOODKA Código: %s", reservaDTO.getId()),
+                String.format("Buen día señor administrador, %n%n" +
+                                "El cliente cancelo la siguiente reserva:%n%n" +
+                                "Código: %s%n" +
+                                "Fecha: %s%n" +
+                                "Hora: %s%n" +
+                                "Nombre de quien reserva: %s %s%n" +
+                                "Cantidad de Personas: %d%n" +
+                                "Teléfono: %s%n" +
+                                "Email: %s%n" +
+                                "Pedido: %s",
+                        reservaDTO.getId(),
+                        reservaDTO.getDia(),
+                        reservaDTO.getHora(),
+                        reservaDTO.getCliente().getNombre(),
+                        reservaDTO.getCliente().getApellido(),
+                        reservaDTO.getCantidadPersonas(),
+                        reservaDTO.getTelefono(),
+                        reservaDTO.getCliente().getEmail(),
+                        reservaDTO.getMensaje()));
         return emailService.sendEmailMessage(
                 reservaDTO.getCliente().getEmail(),
                 String.format("Eliminación de Reserva Restaurante FOODKA Código: %s", reservaDTO.getId()),
@@ -114,8 +184,5 @@ public class ReservaImplementService implements ReservaService {
                 .flatMap(reservas -> Mono.just(modelMapper.map(reservas, ReservaDTO.class).getHora()))
                 .collectList();
     }
-
-
-
 }
 
