@@ -179,19 +179,6 @@ public class ReservaImplementService implements ReservaService {
     }
 
     @Override
-    public Mono<String> sendErrorEmail(ReservaDTO reservaDTO) {
-        return emailService.sendEmailMessage(
-                reservaDTO.getCliente().getEmail(),
-                "Error de reservación Restaurante FOODKA",
-                String.format("Buen día %s, %n" +
-                        "Su reservación no pudo ser completada por que no tomaste horario habilitado.%n" +
-                        "Por favor, ten en cuenta todos los campos y realiza nuevamente la reservación.",
-                        reservaDTO.getCliente().getNombre())
-        );
-    }
-
-
-    @Override
     public Mono<List<String>> findByDia(String dia) {
         return reservaRepository.findByDia(dia)
                 .flatMap(reservas -> Mono.just(modelMapper.map(reservas, ReservaDTO.class).getHora()))

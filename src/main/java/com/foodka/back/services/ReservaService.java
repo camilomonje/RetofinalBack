@@ -16,7 +16,6 @@ public interface ReservaService {
     Mono<String> sendConfirmationEmail(ReservaDTO reservaDTO);
     Mono<String> sendModificationEmail(ReservaDTO reservaDTO);
     Mono<String> sendDeleteEmail(ReservaDTO reservaDTO);
-    Mono<String> sendErrorEmail(ReservaDTO reservaDTO);
     Mono<List<String>> findByDia(String dia);
 
 
